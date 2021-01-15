@@ -28,12 +28,17 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="301.0" layoutY="14.0" prefHeight="234.0" prefWidth="1319.0" style="-fx-background-color: white;" text="Job descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob description" textAlignment="CENTER" wrapText="true" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="301.0" layoutY="280.0" prefHeight="71.0" prefWidth="926.0" style="-fx-background-color: white;" text="Suggested Code" textAlignment="CENTER" wrapText="true" />
-            <Label alignment="CENTER" layoutX="1285.0" layoutY="280.0" prefHeight="72.0" prefWidth="335.0" style="-fx-background-color: FFFFFF;" text="Confidence" />
-            <TextArea layoutX="688.0" layoutY="527.0" prefHeight="65.0" prefWidth="604.0" promptText="Input code" />
-            <Button layoutX="644.0" layoutY="723.0" mnemonicParsing="false" text="Previous case" />
-            <Button layoutX="1231.0" layoutY="723.0" mnemonicParsing="false" text="Save &amp; Next case" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="72.0" prefHeight="234.0" prefWidth="1317.0" style="-fx-background-color: white;" text="Job descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob description" textAlignment="CENTER" wrapText="true" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="301.0" layoutY="350.0" prefHeight="71.0" prefWidth="554.0" style="-fx-background-color: white;" text="Suggested Code" textAlignment="CENTER" wrapText="true" />
+            <Label alignment="CENTER" layoutX="896.0" layoutY="350.0" prefHeight="72.0" prefWidth="130.0" style="-fx-background-color: FFFFFF;" text="Confidence" />
+            <TextArea layoutX="661.0" layoutY="527.0" prefHeight="58.0" prefWidth="604.0" promptText="Input code" />
+            <Button layoutX="369.0" layoutY="638.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="120.0" text="Previous case" />
+            <Button layoutX="1447.0" layoutY="664.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="125.0" text="Save &amp; Next case" />
+            <Button layoutX="1003.0" layoutY="350.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" text="?" />
+            <Separator layoutX="369.0" layoutY="56.0" prefHeight="5.0" prefWidth="1203.0" />
+            <Label layoutX="921.0" layoutY="33.0" text="Job description" />
+            <Separator layoutX="369.0" layoutY="493.0" prefHeight="0.0" prefWidth="1188.0" />
+            <Label layoutX="923.0" layoutY="469.0" text="Enter code" />
          </children>
       </Pane>
    </center>
