@@ -32,9 +32,9 @@
             <Label fx:id="nafLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="322.0" layoutY="139.0" prefHeight="85.0" prefWidth="610.0" style="-fx-background-color: white;" text="Job descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob description" textAlignment="CENTER" wrapText="true" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="961.0" layoutY="138.0" prefHeight="88.0" prefWidth="219.0" style="-fx-background-color: white;" text="Suggested Code" textAlignment="CENTER" wrapText="true" />
             <Label alignment="CENTER" layoutX="1180.0" layoutY="138.0" prefHeight="88.0" prefWidth="138.0" style="-fx-background-color: FFFFFF;" text="Confidence" />
-            <TextArea fx:id="pcsTextArea" layoutX="1385.0" layoutY="138.0" prefHeight="88.0" prefWidth="237.0" promptText="Input code" />
-            <Button layoutX="560.0" layoutY="576.0" mnemonicParsing="false" onAction="#previousDescription" prefHeight="48.0" prefWidth="120.0" text="Previous case" />
-            <Button fx:id="nextButton" layoutX="1434.0" layoutY="578.0" mnemonicParsing="false" onAction="#nextDescription" prefHeight="44.0" prefWidth="125.0" text="Save &amp; Next case" />
+            <TextArea fx:id="pcsTextArea" layoutX="1385.0" layoutY="138.0" onKeyTyped="#pcsColor" prefHeight="88.0" prefWidth="237.0" promptText="Input code" />
+            <Button layoutX="500.0" layoutY="576.0" mnemonicParsing="false" onAction="#previousDescription" prefHeight="48.0" prefWidth="120.0" text="Previous case" />
+            <Button fx:id="nextButton" layoutX="1434.0" layoutY="578.0" mnemonicParsing="false" onAction="#saveAndNext" prefHeight="44.0" prefWidth="125.0" text="Save &amp; Next case" />
             <Button layoutX="1295.0" layoutY="137.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" text="?" />
             <Label layoutX="907.0" layoutY="83.0" text="Job description activities" />
             <Separator layoutX="370.0" layoutY="111.0" prefHeight="5.0" prefWidth="1203.0" />
@@ -42,12 +42,12 @@
             <Label fx:id="pcsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="315.0" layoutY="368.0" prefHeight="85.0" prefWidth="610.0" style="-fx-background-color: white;" text="Job descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob descriptionJob description" textAlignment="CENTER" wrapText="true" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="954.0" layoutY="367.0" prefHeight="88.0" prefWidth="219.0" style="-fx-background-color: white;" text="Suggested Code" textAlignment="CENTER" wrapText="true" />
             <Label alignment="CENTER" layoutX="1173.0" layoutY="367.0" prefHeight="88.0" prefWidth="138.0" style="-fx-background-color: FFFFFF;" text="Confidence" />
-            <TextArea fx:id="nafTextArea" layoutX="1378.0" layoutY="367.0" prefHeight="88.0" prefWidth="237.0" promptText="Input code" />
+            <TextArea fx:id="nafTextArea" layoutX="1378.0" layoutY="367.0" onKeyTyped="#nafColor" prefHeight="88.0" prefWidth="237.0" promptText="Input code" />
             <Button layoutX="1288.0" layoutY="366.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="23.0" text="?" />
             <Label layoutX="907.0" layoutY="313.0" text="Job description sector" />
             <Separator layoutX="370.0" layoutY="341.0" prefHeight="5.0" prefWidth="1203.0" />
             <Line endX="-6.0" endY="-61.00001525878906" layoutX="1185.0" layoutY="518.0" opacity="0.4" startX="-6.0" startY="-149.00001525878906" />
-            <Label fx:id="label" layoutX="907.0" layoutY="707.0" prefHeight="17.0" prefWidth="178.0" text="verbinding" />
+            <ListView fx:id="previousCodes" layoutX="887.0" layoutY="682.0" onMouseClicked="#selectPreviousCode" prefHeight="200.0" prefWidth="298.0" />
          </children>
       </Pane>
    </center>

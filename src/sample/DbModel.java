@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ public class DbModel {
         }
     }
 
-    public ArrayList<JobDescription> getDescriptions() {
+    /*public ArrayList<JobDescription> getDescriptions() {
         ArrayList<JobDescription> jobDescriptions = new ArrayList<>();
         try (
                 Statement stmnt = connection.createStatement();
@@ -41,7 +44,7 @@ public class DbModel {
             throwables.printStackTrace();
         }
         return jobDescriptions;
-    }
+    }*/
 
     public void getRS() throws SQLException {
         Statement stmnt = connection.createStatement();
@@ -80,4 +83,21 @@ public class DbModel {
         ps.setInt(3, jobDescription.id);
         ps.executeUpdate();
     }
+
+    public JobDescription getPreviousDescription(int id) throws SQLException {
+        JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf");
+        PreparedStatement ps = connection.prepareStatement("select * from descriptions where subject_id = ?");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            jobDescription.setSubjectId(rs.getInt("subject_id"));
+            jobDescription.setProfessionTxt(rs.getString("profession_txt"));
+            jobDescription.setSecteurTxt(rs.getString("secteur_txt"));
+            jobDescription.setCodePcs(rs.getString("code_pcs"));
+            jobDescription.setCodeNaf(rs.getString("code_naf"));
+        }
+        return jobDescription;
+    }
+
+
 }
