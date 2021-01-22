@@ -27,6 +27,8 @@ public class Controller implements Initializable {
     public TextArea nafTextArea;
     public ListView previousCodes;
     public JobDescription currentJd;
+    public JobDescription previousJd;
+    public boolean previousJdSelected;
 
 
     @Override
@@ -47,8 +49,13 @@ public class Controller implements Initializable {
 
     public void nextDescription() throws SQLException {
         saveDescription();
-        previousCodes.getItems().add(currentJd.id);
-        currentJd = dbModel.getNextDescription();
+        if (previousJdSelected) {
+            currentJd = previousJd;
+            previousJdSelected = false;
+        } else {
+            previousCodes.getItems().add(currentJd.id);
+            currentJd = dbModel.getNextDescription();
+        }
         pcsLabel.setText(currentJd.getProfessionTxt());
         nafLabel.setText(currentJd.getSecteurTxt());
         pcsTextArea.setText("");
@@ -123,6 +130,8 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to load " + previousId + " ?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
+            previousJd = currentJd;
+            previousJdSelected = true;
             currentJd = dbModel.getPreviousDescription(previousId);
             pcsLabel.setText(currentJd.getProfessionTxt());
             nafLabel.setText(currentJd.getSecteurTxt());
