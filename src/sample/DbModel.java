@@ -1,15 +1,16 @@
 package sample;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DbModel {
     Connection connection;
     ResultSet allDescriptions;
+    
 
     public DbModel() {
         connection = DbConnection.connector();
@@ -25,79 +26,38 @@ public class DbModel {
         }
     }
 
-    /*public ArrayList<JobDescription> getDescriptions() {
-        ArrayList<JobDescription> jobDescriptions = new ArrayList<>();
-        try (
-                Statement stmnt = connection.createStatement();
-                ResultSet descriptions = stmnt.executeQuery("select * from descriptions");
-        ) {
-            while (descriptions.next()) {
-                int id = descriptions.getInt("subject_id");
-                String profession = descriptions.getString("profession_txt");
-                String secteur = descriptions.getString("secteur_txt");
-                String pcs = descriptions.getString("code_pcs");
-                String naf = descriptions.getString("code_naf");
-                JobDescription jobDescription = new JobDescription(id, profession, secteur, pcs, naf);
-                jobDescriptions.add(jobDescription);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return jobDescriptions;
-    }*/
-
-    public void getRS() throws SQLException {
+    public ObservableList<JobDescription> getList(ObservableList<JobDescription> descriptions) throws SQLException {
         Statement stmnt = connection.createStatement();
         allDescriptions = stmnt.executeQuery("select * from descriptions");
-
-    }
-
-    public JobDescription getNextDescription() throws SQLException {
-        JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf");
-        if (allDescriptions.next()) {
+        while (allDescriptions.next()) {
+            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0, FXCollections.observableArrayList("codes"));
             jobDescription.setSubjectId(allDescriptions.getInt("subject_id"));
             jobDescription.setProfessionTxt(allDescriptions.getString("profession_txt"));
             jobDescription.setSecteurTxt(allDescriptions.getString("secteur_txt"));
             jobDescription.setCodePcs(allDescriptions.getString("code_pcs"));
             jobDescription.setCodeNaf(allDescriptions.getString("code_naf"));
+            jobDescription.setConfidence(allDescriptions.getInt("code_1_conf"));
+            ComboBox codes = new ComboBox(FXCollections.observableArrayList(allDescriptions.getString("suggested_code_1") + " | "
+                    + allDescriptions.getString("code_1_conf") + "%", allDescriptions.getString("suggested_code_2")  + " | "
+                    + allDescriptions.getString("code_2_conf") + "%", allDescriptions.getString("suggested_code_3")  + " | "
+                    + allDescriptions.getString("code_3_conf") + "%"));
+            codes.getSelectionModel().selectFirst();
+            jobDescription.setSuggestedCodes(codes);
+            descriptions.add(jobDescription);
         }
-        return jobDescription;
+        return descriptions;
     }
 
-    public JobDescription getPreviousDescription() throws SQLException {
-        JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf");
-        if (allDescriptions.previous()) {
-            jobDescription.setSubjectId(allDescriptions.getInt("subject_id"));
-            jobDescription.setProfessionTxt(allDescriptions.getString("profession_txt"));
-            jobDescription.setSecteurTxt(allDescriptions.getString("secteur_txt"));
-            jobDescription.setCodePcs(allDescriptions.getString("code_pcs"));
-            jobDescription.setCodeNaf(allDescriptions.getString("code_naf"));
+    public void saveCode(List<List<String>> descriptions) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE descriptions SET code_pcs = ? WHERE subject_id = ?");
+        for (int i=0; i < descriptions.size(); i++){
+                String id = descriptions.get(i).get(0);
+                String code = descriptions.get(i).get(1);
+                String[] parts = code.split(" | ");
+                int intCode = Integer.parseInt(id);
+                ps.setInt(2, intCode);
+                ps.setString(1, parts[0]);
+                ps.executeUpdate();
+            }
         }
-        return jobDescription;
-    }
-
-    public void saveDescription(JobDescription jobDescription) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE descriptions SET code_pcs = ?, code_naf = ? WHERE subject_id = ?");
-        ps.setString(1, jobDescription.codePcs);
-        ps.setString(2, jobDescription.codeNaf);
-        ps.setInt(3, jobDescription.id);
-        ps.executeUpdate();
-    }
-
-    public JobDescription getPreviousDescription(int id) throws SQLException {
-        JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf");
-        PreparedStatement ps = connection.prepareStatement("select * from descriptions where subject_id = ?");
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            jobDescription.setSubjectId(rs.getInt("subject_id"));
-            jobDescription.setProfessionTxt(rs.getString("profession_txt"));
-            jobDescription.setSecteurTxt(rs.getString("secteur_txt"));
-            jobDescription.setCodePcs(rs.getString("code_pcs"));
-            jobDescription.setCodeNaf(rs.getString("code_naf"));
-        }
-        return jobDescription;
-    }
-
-
 }
