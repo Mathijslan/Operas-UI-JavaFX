@@ -12,17 +12,22 @@ public class JobDescription {
     StringProperty secteurTxt;
     StringProperty codePcs;
     StringProperty codeNaf;
-    int confidence;
-    private ComboBox suggestedCodes;
+    int confidencePcs;
+    int confidenceNaf;
+    private ComboBox suggestedCodesPcs;
+    private ComboBox suggestedCodesNaf;
 
-    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidence, ObservableList codes) {
+
+    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidencePcs, ObservableList codesPcs, int codeConfidenceNaf, ObservableList codesNaf) {
         id = subjectId;
-        this.confidence = codeConfidence;
+        this.confidencePcs = codeConfidencePcs;
+        this.confidenceNaf = codeConfidenceNaf;
         this.professionTxt = new SimpleStringProperty(profession);
         this.secteurTxt = new SimpleStringProperty(secteur);
         this.codePcs = new SimpleStringProperty(pcs);
         this.codeNaf = new SimpleStringProperty(naf);
-        this.suggestedCodes = new ComboBox(codes);
+        this.suggestedCodesPcs = new ComboBox(codesPcs);
+        this.suggestedCodesNaf = new ComboBox(codesNaf);
     }
 
     public void setSubjectId(int id) {
@@ -45,9 +50,13 @@ public class JobDescription {
         this.codeNaf.set(naf);
     }
 
-    public void setConfidence(int confidence) { this.confidence = confidence; }
+    public void setConfidencePcs(int confidence) { this.confidencePcs = confidence; }
 
-    public void setSuggestedCodes(ComboBox suggestedCodes) {this.suggestedCodes = suggestedCodes;}
+    public void setConfidenceNaf(int confidence) { this.confidenceNaf = confidence; }
+
+    public void setSuggestedCodesPcs(ComboBox suggestedCodes) {this.suggestedCodesPcs = suggestedCodes;}
+
+    public void setSuggestedCodesNaf(ComboBox suggestedCodes) {this.suggestedCodesNaf = suggestedCodes;}
 
     public String getProfessionTxt() {
         return professionTxt.get();
@@ -55,7 +64,9 @@ public class JobDescription {
 
     public int getId() { return id; }
 
-    public int getConfidence() {return confidence;}
+    public int getConfidencePcs() {return confidencePcs;}
+
+    public int getConfidenceNaf() {return confidenceNaf;}
 
     public String getSecteurTxt () {
         return secteurTxt.get();
@@ -67,7 +78,9 @@ public class JobDescription {
 
     public String getCodeNaf() { return codeNaf.get(); }
 
-    public ComboBox getSuggestedCodes() { return suggestedCodes; }
+    public ComboBox getSuggestedCodesPcs() { return suggestedCodesPcs; }
+
+    public ComboBox getSuggestedCodesNaf() { return suggestedCodesNaf; }
 
     public StringProperty professionProperty() { return professionTxt; }
 
@@ -76,5 +89,6 @@ public class JobDescription {
     public StringProperty codePcsProperty() { return codePcs; }
 
     public StringProperty codeNafProperty() { return codeNaf; }
+
 
 }

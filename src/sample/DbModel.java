@@ -30,33 +30,43 @@ public class DbModel {
         Statement stmnt = connection.createStatement();
         allDescriptions = stmnt.executeQuery("select * from descriptions");
         while (allDescriptions.next()) {
-            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0, FXCollections.observableArrayList("codes"));
+            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0, FXCollections.observableArrayList("codesPcs"), 0, FXCollections.observableArrayList("codesNaf"));
             jobDescription.setSubjectId(allDescriptions.getInt("subject_id"));
             jobDescription.setProfessionTxt(allDescriptions.getString("profession_txt"));
             jobDescription.setSecteurTxt(allDescriptions.getString("secteur_txt"));
-            jobDescription.setCodePcs(allDescriptions.getString("code_pcs"));
-            jobDescription.setCodeNaf(allDescriptions.getString("code_naf"));
-            jobDescription.setConfidence(allDescriptions.getInt("code_1_conf"));
-            ComboBox codes = new ComboBox(FXCollections.observableArrayList(allDescriptions.getString("suggested_code_1") + " | "
-                    + allDescriptions.getString("code_1_conf") + "%", allDescriptions.getString("suggested_code_2")  + " | "
-                    + allDescriptions.getString("code_2_conf") + "%", allDescriptions.getString("suggested_code_3")  + " | "
-                    + allDescriptions.getString("code_3_conf") + "%"));
-            codes.getSelectionModel().selectFirst();
-            jobDescription.setSuggestedCodes(codes);
+            jobDescription.setConfidencePcs(allDescriptions.getInt("code_1_conf_pcs"));
+            jobDescription.setConfidenceNaf(allDescriptions.getInt("code_1_conf_naf"));
+            ComboBox codesPcs = new ComboBox(FXCollections.observableArrayList(allDescriptions.getString("suggested_code_1_pcs") + " | "
+                    + allDescriptions.getString("code_1_conf_pcs") + "%", allDescriptions.getString("suggested_code_2_pcs")  + " | "
+                    + allDescriptions.getString("code_2_conf_pcs") + "%", allDescriptions.getString("suggested_code_3_pcs")  + " | "
+                    + allDescriptions.getString("code_3_conf_pcs") + "%"));
+            ComboBox codesNaf = new ComboBox(FXCollections.observableArrayList(allDescriptions.getString("suggested_code_1_naf") + " | "
+                    + allDescriptions.getString("code_1_conf_naf") + "%", allDescriptions.getString("suggested_code_2_naf")  + " | "
+                    + allDescriptions.getString("code_2_conf_naf") + "%", allDescriptions.getString("suggested_code_3_naf")  + " | "
+                    + allDescriptions.getString("code_3_conf_naf") + "%"));
+            codesPcs.getSelectionModel().selectFirst();
+            codesNaf.getSelectionModel().selectFirst();
+            jobDescription.setSuggestedCodesPcs(codesPcs);
+            jobDescription.setSuggestedCodesNaf(codesNaf);
             descriptions.add(jobDescription);
         }
         return descriptions;
     }
 
     public void saveCode(List<List<String>> descriptions) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("UPDATE descriptions SET code_pcs = ? WHERE subject_id = ?");
+        PreparedStatement ps = connection.prepareStatement("UPDATE descriptions SET code_pcs = ?,code_naf = ? WHERE subject_id = ?");
         for (int i=0; i < descriptions.size(); i++){
                 String id = descriptions.get(i).get(0);
-                String code = descriptions.get(i).get(1);
-                String[] parts = code.split(" | ");
+                String codePcs = descriptions.get(i).get(1);
+                String codeNaf = descriptions.get(i).get(2);
+
+                String[] pcsParts = codePcs.split(" | ");
+                String[] nafParts = codeNaf.split(" | ");
+
                 int intCode = Integer.parseInt(id);
-                ps.setInt(2, intCode);
-                ps.setString(1, parts[0]);
+                ps.setInt(3, intCode);
+                ps.setString(1, pcsParts[0]);
+                ps.setString(2, nafParts[0]);
                 ps.executeUpdate();
             }
         }
