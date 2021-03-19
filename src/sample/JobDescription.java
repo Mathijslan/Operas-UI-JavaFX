@@ -2,8 +2,10 @@ package sample;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 public class JobDescription {
 
@@ -12,13 +14,18 @@ public class JobDescription {
     StringProperty secteurTxt;
     StringProperty codePcs;
     StringProperty codeNaf;
+    StringProperty manualPcsCode;
+    StringProperty manualNafCode;
     int confidencePcs;
     int confidenceNaf;
     private ComboBox suggestedCodesPcs;
     private ComboBox suggestedCodesNaf;
+    private ComboBox manual;
+    private ComboBox originalCodesPcs;
+    private ComboBox originalCodesNaf;
 
 
-    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidencePcs, ObservableList codesPcs, int codeConfidenceNaf, ObservableList codesNaf) {
+    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidencePcs, String manualPcs, String manualNaf, ObservableList codesPcs, int codeConfidenceNaf, ObservableList codesNaf) {
         id = subjectId;
         this.confidencePcs = codeConfidencePcs;
         this.confidenceNaf = codeConfidenceNaf;
@@ -26,8 +33,30 @@ public class JobDescription {
         this.secteurTxt = new SimpleStringProperty(secteur);
         this.codePcs = new SimpleStringProperty(pcs);
         this.codeNaf = new SimpleStringProperty(naf);
+        this.manualPcsCode = new SimpleStringProperty(manualPcs);
+        this.manualNafCode = new SimpleStringProperty(manualNaf);
         this.suggestedCodesPcs = new ComboBox(codesPcs);
         this.suggestedCodesNaf = new ComboBox(codesNaf);
+    }
+
+    public void setPcsToManual() {
+        originalCodesPcs = suggestedCodesPcs;
+        manual = new ComboBox(FXCollections.observableArrayList("Manual"));
+        setSuggestedCodesPcs(manual);
+    }
+
+    public void setPcsToSuggest() {
+        setSuggestedCodesPcs(originalCodesPcs);
+    }
+
+    public void setNafToManual() {
+        originalCodesNaf = suggestedCodesNaf;
+        manual = new ComboBox(FXCollections.observableArrayList("Manual"));
+        setSuggestedCodesNaf(manual);
+    }
+
+    public void setNafToSuggest() {
+        setSuggestedCodesNaf(originalCodesNaf);
     }
 
     public void setSubjectId(int id) {
@@ -38,8 +67,14 @@ public class JobDescription {
         this.professionTxt.set(txt) ;
     }
 
+    public void setManualPcsCode (String txt) { this.manualPcsCode.set(txt); }
+
     public void setSecteurTxt (String txt) {
         this.secteurTxt.set(txt);
+    }
+
+    public void setManualNafCode (String txt) {
+        this.manualNafCode.set(txt);
     }
 
     public void setCodePcs(String pcs) {
@@ -68,6 +103,14 @@ public class JobDescription {
 
     public int getConfidenceNaf() {return confidenceNaf;}
 
+    public String getManualPcsCode () {
+        return manualPcsCode.get();
+    }
+
+    public String getManualNafCode () {
+        return manualNafCode.get();
+    }
+
     public String getSecteurTxt () {
         return secteurTxt.get();
     }
@@ -89,6 +132,10 @@ public class JobDescription {
     public StringProperty codePcsProperty() { return codePcs; }
 
     public StringProperty codeNafProperty() { return codeNaf; }
+
+    public StringProperty manualNafProperty() { return manualNafCode; }
+
+    public StringProperty manualPcsProperty() { return manualPcsCode; }
 
 
 }

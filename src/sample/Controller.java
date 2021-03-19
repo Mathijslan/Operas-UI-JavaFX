@@ -4,9 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 
 import java.net.URL;
@@ -25,6 +27,8 @@ public class Controller implements Initializable {
     public TableColumn<JobDescription, String> suggestedCodesPcs;
     public TableColumn<JobDescription, String> suggestedCodesNaf;
     public TableColumn<JobDescription, String> sectorColumn;
+    public TableColumn<JobDescription, String> pcsManualColumn;
+    public TableColumn<JobDescription, String> nafManualColumn;
     public ObservableList<JobDescription> jobDescriptions = FXCollections.observableArrayList();
 
     //Initialize program, here the databasemodel(class) is invoked and a connection is made.
@@ -34,6 +38,7 @@ public class Controller implements Initializable {
             try {
                 dbModel.getList(jobDescriptions);
                 FilteredList<JobDescription> filteredDescriptions = new FilteredList<>(jobDescriptions, s -> true);
+                descriptionTable.setEditable(true);
                 filterField.textProperty().addListener((observable, oldValue, newValue) -> {
                     filteredDescriptions.setPredicate(jobDescription -> {
                         // If filter text is empty, display all descriptions.
@@ -49,6 +54,7 @@ public class Controller implements Initializable {
                         }
                     });
                 });
+
                 SortedList<JobDescription> sortedDescriptions = new SortedList<>(filteredDescriptions);
                 // 4. Bind the SortedList comparator to the TableView comparator.
                 sortedDescriptions.comparatorProperty().bind(descriptionTable.comparatorProperty());
@@ -56,12 +62,54 @@ public class Controller implements Initializable {
                 descriptionTable.setItems(sortedDescriptions);
                 activitiesColumn.setCellValueFactory(cellData -> cellData.getValue().secteurProperty());
                 sectorColumn.setCellValueFactory(cellData -> cellData.getValue().professionProperty());
-                suggestedCodesPcs.setCellValueFactory(new PropertyValueFactory<JobDescription, String>("suggestedCodesPcs"));
-                suggestedCodesNaf.setCellValueFactory(new PropertyValueFactory<JobDescription, String>("suggestedCodesNaf"));
+                pcsManualColumn.setCellValueFactory(cellData -> cellData.getValue().manualPcsProperty());
+                pcsManualColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                pcsManualColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<JobDescription, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<JobDescription, String> jobDescriptionStringCellEditEvent) {
+                        if (jobDescriptionStringCellEditEvent.getNewValue().equals("")) {
+                            JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
+                            jobDescription.setManualPcsCode(jobDescriptionStringCellEditEvent.getNewValue());
+                            jobDescription.setPcsToSuggest();
+                            jobDescription.getSuggestedCodesPcs().getSelectionModel().selectFirst();
+                            descriptionTable.refresh();
+                        } else {
+                            JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
+                            jobDescription.setManualPcsCode(jobDescriptionStringCellEditEvent.getNewValue());
+                            jobDescription.setPcsToManual();
+                            jobDescription.getSuggestedCodesPcs().getSelectionModel().selectFirst();
+                            descriptionTable.refresh();
+                        }
+                    }
+                });
+                nafManualColumn.setCellValueFactory(cellData -> cellData.getValue().manualNafProperty());
+                nafManualColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                nafManualColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<JobDescription, String>>() {
+                    @Override
+                    public void handle(TableColumn.CellEditEvent<JobDescription, String> jobDescriptionStringCellEditEvent) {
+                        if (jobDescriptionStringCellEditEvent.getNewValue().equals("")) {
+                            JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
+                            jobDescription.setManualNafCode(jobDescriptionStringCellEditEvent.getNewValue());
+                            jobDescription.setNafToSuggest();
+                            jobDescription.getSuggestedCodesNaf().getSelectionModel().selectFirst();
+                            descriptionTable.refresh();
+                        } else {
+                            JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
+                            jobDescription.setManualNafCode(jobDescriptionStringCellEditEvent.getNewValue());
+                            jobDescription.setNafToManual();
+                            jobDescription.getSuggestedCodesNaf().getSelectionModel().selectFirst();
+                            descriptionTable.refresh();
+                        }
+                    }
+                });
+                suggestedCodesPcs.setCellValueFactory(new PropertyValueFactory<>("suggestedCodesPcs"));
+                suggestedCodesNaf.setCellValueFactory(new PropertyValueFactory<>("suggestedCodesNaf"));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        } else {System.out.println("Not connected");}
+        } else {
+            System.out.println("Not connected");
+        }
     }
 
     public ObservableList<JobDescription> getDescriptions() {
@@ -74,13 +122,38 @@ public class Controller implements Initializable {
         List<List<String>> arrList = new ArrayList<>();
         for (int i = 0; i < descriptionTable.getItems().size(); i++) {
             description = descriptionTable.getItems().get(i);
-            arrList.add(new ArrayList<>());
-            arrList.get(i).add(Integer.toString(description.getId()));
-            arrList.get(i).add((String) description.getSuggestedCodesPcs().getValue());
-            arrList.get(i).add((String) description.getSuggestedCodesNaf().getValue());
+            if (description.getManualNafCode().equals("") && description.getManualPcsCode().equals("")) {
+                arrList.add(new ArrayList<>());
+                arrList.get(i).add(Integer.toString(description.getId()));
+                arrList.get(i).add((String) description.getSuggestedCodesPcs().getValue());
+                arrList.get(i).add((String) description.getSuggestedCodesNaf().getValue());
+            } else if (!description.getManualNafCode().equals("") && !description.getManualPcsCode().equals("")) {
+                arrList.add(new ArrayList<>());
+                arrList.get(i).add(Integer.toString(description.getId()));
+                arrList.get(i).add(description.getManualPcsCode());
+                arrList.get(i).add(description.getManualNafCode());
+            } else if (!description.getManualNafCode().equals("") && description.getManualPcsCode().equals("")) {
+                arrList.add(new ArrayList<>());
+                arrList.get(i).add(Integer.toString(description.getId()));
+                arrList.get(i).add((String) description.getSuggestedCodesPcs().getValue());
+                arrList.get(i).add(description.getManualNafCode());
+            } else if (description.getManualNafCode().equals("") && !description.getManualPcsCode().equals("")) {
+                arrList.add(new ArrayList<>());
+                arrList.get(i).add(Integer.toString(description.getId()));
+                arrList.get(i).add(description.getManualPcsCode());
+                arrList.get(i).add((String) description.getSuggestedCodesNaf().getValue());
+            }
         }
         dbModel.saveCode(arrList);
     }
+
+    public void openThresholdMenu() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Set confidence threshold");
+        dialog.setHeaderText("Set confidence threshold");
+        dialog.showAndWait().ifPresent(string -> filterField.setText(string));
+    }
+}
 
     /*public void saveAndNext() throws SQLException {
         if (checkPcs() && checkNaf()) {
@@ -132,4 +205,4 @@ public class Controller implements Initializable {
         }
 
     }*/
-}
+

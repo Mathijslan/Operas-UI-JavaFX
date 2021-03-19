@@ -30,7 +30,7 @@ public class DbModel {
         Statement stmnt = connection.createStatement();
         allDescriptions = stmnt.executeQuery("select * from descriptions");
         while (allDescriptions.next()) {
-            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0, FXCollections.observableArrayList("codesPcs"), 0, FXCollections.observableArrayList("codesNaf"));
+            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0,"","", FXCollections.observableArrayList("codesPcs"), 0, FXCollections.observableArrayList("codesNaf"));
             jobDescription.setSubjectId(allDescriptions.getInt("subject_id"));
             jobDescription.setProfessionTxt(allDescriptions.getString("profession_txt"));
             jobDescription.setSecteurTxt(allDescriptions.getString("secteur_txt"));
@@ -57,6 +57,7 @@ public class DbModel {
         PreparedStatement ps = connection.prepareStatement("UPDATE descriptions SET code_pcs = ?,code_naf = ? WHERE subject_id = ?");
         for (int i=0; i < descriptions.size(); i++){
                 String id = descriptions.get(i).get(0);
+
                 String codePcs = descriptions.get(i).get(1);
                 String codeNaf = descriptions.get(i).get(2);
 
