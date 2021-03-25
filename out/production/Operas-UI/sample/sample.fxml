@@ -8,20 +8,16 @@
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
+               <items>
+              <MenuItem mnemonicParsing="false" onAction="#saveDescription" text="Save" />
+               </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Codes">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#openThresholdMenu" text="Threshold" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="Help" />
         </menus>
       </MenuBar>
    </top>
@@ -30,18 +26,17 @@
          <children>
             <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="1920.0">
                <children>
-                  <TableView fx:id="descriptionTable" prefHeight="909.0" prefWidth="1834.0">
+                  <TableView fx:id="descriptionTable" prefHeight="1055.0" prefWidth="1920.0">
                     <columns>
-                        <TableColumn fx:id="sectorColumn" editable="false" minWidth="0.0" prefWidth="539.999981701374" text="Sector" />
-                        <TableColumn fx:id="suggestedCodesNaf" minWidth="0.0" prefWidth="183.20001220703125" text="suggested Codes | Confidence" />
-                        <TableColumn fx:id="nafManualColumn" minWidth="0.0" prefWidth="247.20001220703125" text="Manual code" />
-                      <TableColumn fx:id="activitiesColumn" editable="false" prefWidth="541.9999389648438" text="Profession" />
-                        <TableColumn fx:id="suggestedCodesPcs" minWidth="0.0" prefWidth="98.4000244140625" text="suggested Codes | Confidence" />
-                        <TableColumn fx:id="pcsManualColumn" minWidth="0.0" prefWidth="98.4000244140625" text="Manual code" />
+                        <TableColumn fx:id="sectorColumn" editable="false" minWidth="0.0" prefWidth="539.999981701374" resizable="false" text="Sector" />
+                        <TableColumn fx:id="suggestedCodesNaf" minWidth="0.0" prefWidth="194.0" resizable="false" text="Suggested codes | Confidence" />
+                        <TableColumn fx:id="nafManualColumn" minWidth="0.0" prefWidth="225.99993896484375" resizable="false" text="Manual code" />
+                      <TableColumn fx:id="activitiesColumn" editable="false" prefWidth="554.4000244140625" resizable="false" text="Profession" />
+                        <TableColumn fx:id="suggestedCodesPcs" minWidth="0.0" prefWidth="192.0" resizable="false" text="suggested Codes | Confidence" />
+                        <TableColumn fx:id="pcsManualColumn" minWidth="0.0" prefWidth="213.5999755859375" resizable="false" text="Manual code" />
                     </columns>
                   </TableView>
                   <TextField fx:id="filterField" editable="false" opacity="0.0" prefHeight="26.0" prefWidth="913.0" />
-                  <Button fx:id="saveDescription" mnemonicParsing="false" onAction="#saveDescription" text="Save" />
                </children>
             </VBox>
          </children></Pane>

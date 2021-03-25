@@ -21,7 +21,9 @@ public class Main extends Application implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         primaryStage.setTitle("Operas UI");
-        primaryStage.setScene(new Scene(root, 1920, 1080));
+        Scene scene = new Scene(root, 1920, 1080);
+        scene.getStylesheets().add("sample/design.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

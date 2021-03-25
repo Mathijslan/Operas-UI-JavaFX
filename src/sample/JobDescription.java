@@ -5,7 +5,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 
 public class JobDescription {
 
@@ -16,6 +15,7 @@ public class JobDescription {
     StringProperty codeNaf;
     StringProperty manualPcsCode;
     StringProperty manualNafCode;
+    public boolean setToManual;
     int confidencePcs;
     int confidenceNaf;
     private ComboBox suggestedCodesPcs;
@@ -25,7 +25,7 @@ public class JobDescription {
     private ComboBox originalCodesNaf;
 
 
-    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidencePcs, String manualPcs, String manualNaf, ObservableList codesPcs, int codeConfidenceNaf, ObservableList codesNaf) {
+    public JobDescription(int subjectId, String profession, String secteur, String pcs, String naf, int codeConfidencePcs, String manualPcs, String manualNaf, ObservableList codesPcs, int codeConfidenceNaf, ObservableList codesNaf, boolean setToManual) {
         id = subjectId;
         this.confidencePcs = codeConfidencePcs;
         this.confidenceNaf = codeConfidenceNaf;
@@ -36,27 +36,38 @@ public class JobDescription {
         this.manualPcsCode = new SimpleStringProperty(manualPcs);
         this.manualNafCode = new SimpleStringProperty(manualNaf);
         this.suggestedCodesPcs = new ComboBox(codesPcs);
+        this.setToManual = setToManual;
         this.suggestedCodesNaf = new ComboBox(codesNaf);
+        this.originalCodesPcs = new ComboBox(codesPcs);
+        this.originalCodesNaf = new ComboBox(codesNaf);
+    }
+
+    public boolean isSetToManual () {
+        return this.setToManual;
     }
 
     public void setPcsToManual() {
         originalCodesPcs = suggestedCodesPcs;
+        this.setToManual = true;
         manual = new ComboBox(FXCollections.observableArrayList("Manual"));
         setSuggestedCodesPcs(manual);
     }
 
     public void setPcsToSuggest() {
         setSuggestedCodesPcs(originalCodesPcs);
+        this.setToManual = false;
     }
 
     public void setNafToManual() {
         originalCodesNaf = suggestedCodesNaf;
         manual = new ComboBox(FXCollections.observableArrayList("Manual"));
+        this.setToManual = true;
         setSuggestedCodesNaf(manual);
     }
 
     public void setNafToSuggest() {
         setSuggestedCodesNaf(originalCodesNaf);
+        this.setToManual = false;
     }
 
     public void setSubjectId(int id) {

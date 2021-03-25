@@ -70,8 +70,10 @@ public class Controller implements Initializable {
                         if (jobDescriptionStringCellEditEvent.getNewValue().equals("")) {
                             JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
                             jobDescription.setManualPcsCode(jobDescriptionStringCellEditEvent.getNewValue());
-                            jobDescription.setPcsToSuggest();
-                            jobDescription.getSuggestedCodesPcs().getSelectionModel().selectFirst();
+                            if (jobDescription.isSetToManual()) {
+                                jobDescription.setPcsToSuggest();
+                                jobDescription.getSuggestedCodesPcs().getSelectionModel().selectFirst();
+                            }
                             descriptionTable.refresh();
                         } else {
                             JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
@@ -90,8 +92,10 @@ public class Controller implements Initializable {
                         if (jobDescriptionStringCellEditEvent.getNewValue().equals("")) {
                             JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
                             jobDescription.setManualNafCode(jobDescriptionStringCellEditEvent.getNewValue());
-                            jobDescription.setNafToSuggest();
-                            jobDescription.getSuggestedCodesNaf().getSelectionModel().selectFirst();
+                            if (jobDescription.isSetToManual()){
+                                jobDescription.setNafToSuggest();
+                                jobDescription.getSuggestedCodesNaf().getSelectionModel().selectFirst();
+                            }
                             descriptionTable.refresh();
                         } else {
                             JobDescription jobDescription = jobDescriptionStringCellEditEvent.getRowValue();
@@ -145,12 +149,18 @@ public class Controller implements Initializable {
             }
         }
         dbModel.saveCode(arrList);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Codes saved");
+        alert.setHeaderText(null);
+        alert.setContentText("The job descriptions with the corresponding codes are saved.");
+
+        alert.showAndWait();
     }
 
     public void openThresholdMenu() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Set confidence threshold");
-        dialog.setHeaderText("Set confidence threshold");
+        dialog.setHeaderText("Set confidence threshold (%)");
         dialog.showAndWait().ifPresent(string -> filterField.setText(string));
     }
 }

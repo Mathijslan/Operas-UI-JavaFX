@@ -30,7 +30,7 @@ public class DbModel {
         Statement stmnt = connection.createStatement();
         allDescriptions = stmnt.executeQuery("select * from descriptions");
         while (allDescriptions.next()) {
-            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0,"","", FXCollections.observableArrayList("codesPcs"), 0, FXCollections.observableArrayList("codesNaf"));
+            JobDescription jobDescription = new JobDescription(9999, "profession", "secteur", "pcs", "naf", 0,"","", FXCollections.observableArrayList("codesPcs"), 0, FXCollections.observableArrayList("codesNaf"), false);
             jobDescription.setSubjectId(allDescriptions.getInt("subject_id"));
             jobDescription.setProfessionTxt(allDescriptions.getString("profession_txt"));
             jobDescription.setSecteurTxt(allDescriptions.getString("secteur_txt"));
