@@ -1,0 +1,28 @@
+
+
+.combo-box .list-cell
+{
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 2em;
+}
+
+.combo-box {
+    -fx-pref-width: 200;
+}
+
+.combo-box>.list-cell {
+    -fx-alignment: center;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: #93f9b911;
+    -fx-text-fill: #003465;
+}
+
+.table-row-cell: hover {
+    -fx-text-background-color: #003465;
+}
